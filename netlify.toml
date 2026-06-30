@@ -1,0 +1,32 @@
+# netlify.toml
+# Configuración de despliegue para CotizaRápido
+# ─────────────────────────────────────────────
+
+[build]
+  # Carpeta raíz del proyecto (donde está tu index.html)
+  publish = "."
+
+  # Netlify detecta las functions automáticamente desde esta carpeta
+  functions = "netlify/functions"
+
+# Redirige todas las rutas al index.html (necesario si agregas rutas en el futuro)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de seguridad
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Headers específicos para las functions (CORS)
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"
